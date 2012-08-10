@@ -4,7 +4,7 @@ http.createServer(function (req, res) {
   res.end( __dirname + 'Hello World\n');
 }).listen(80);
 
-console.log('Server running');
+console.log('> Server running');
 
 
 var express = require('express');
@@ -15,6 +15,6 @@ app.get('/a', function(req, res){
 	res.sendfile( __dirname + '/helloworld/bin/index.html' );
 });
 
-app.listen(80);
+app.listen(8081);
 
 console.log('> http server has started on port 8080');
