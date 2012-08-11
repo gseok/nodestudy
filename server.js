@@ -12,20 +12,30 @@ app.get('/ppt/chap1/', function(req, res){
 	res.sendfile( __dirname + '/ppt/chap1/chap1.html' );
 });
 
-app.param('cssname');
-app.get('/ppt/chap1/themes/:cssname', function(req, res){
-	console.log( req.params.cssname );
-	res.sendfile( __dirname + '/ppt/chap1/themes/'+ req.params.cssname );
+app.param('name');
+app.get('/ppt/chap1/scripts/:name', function(req, res){
+	console.log( req.params.name );
+	res.sendfile( __dirname + '/ppt/chap1/scripts/'+ req.params.name );
 });
-app.get('/ppt/chap1/themes/ribbon/styles/:cssname', function(req, res){
-	console.log( req.params.cssname );
-	res.sendfile( __dirname + '/ppt/chap1/themes/ribbon/styles/'+ req.params.cssname );
+app.get('/ppt/chap1/themes/:name', function(req, res){
+	console.log( req.params.name );
+	res.sendfile( __dirname + '/ppt/chap1/themes/'+ req.params.name );
 });
-
-app.param('resource');
-app.get('/ppt/chap1/pictures/:resource', function(req, res){
-	console.log( req.params.resource );
-	res.sendfile( __dirname + '/ppt/chap1/pictures/'+ req.params.resource );
+app.get('/ppt/chap1/themes/ribbon/styles/:name', function(req, res){
+	console.log( req.params.name );
+	res.sendfile( __dirname + '/ppt/chap1/themes/ribbon/styles/'+ req.params.name );
+});
+app.get('/ppt/chap1/themes/ribbon/images/:name', function(req, res){
+	console.log( req.params.name );
+	res.sendfile( __dirname + '/ppt/chap1/themes/ribbon/images/'+ req.params.name );
+});
+app.get('/ppt/chap1/themes/ribbon/fonts/:name', function(req, res){
+	console.log( req.params.name );
+	res.sendfile( __dirname + '/ppt/chap1/themes/ribbon/fonts/'+ req.params.name );
+});
+app.get('/ppt/chap1/pictures/:name', function(req, res){
+	console.log( req.params.name );
+	res.sendfile( __dirname + '/ppt/chap1/pictures/'+ req.params.name );
 });
 
 app.listen(80);
