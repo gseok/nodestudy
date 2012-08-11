@@ -1,0 +1,745 @@
+<html lang="en-US"><head>
+	<title>Node.js</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=1274, user-scalable=no">
+	<link rel="stylesheet" href="themes/shCore.css">
+	<link rel="stylesheet" href="themes/shThemeDefault.css">
+	<link rel="stylesheet" href="themes/ribbon/styles/style.css">
+	<style>
+	    .syntaxhighlighter {
+	        overflow: visible !important;
+	        }
+	    P.reference {
+	        font-size: 16px;
+            position: absolute;
+            left: 178px;
+            bottom: 40px;
+	        }
+	        P.reference A {
+                color: #BBB;
+	            }
+		#Cover H2 {
+		    position: absolute;
+		    bottom: 100px;
+		    right: 100px;
+		    margin: 0;
+		    text-align: right;
+		    font-size: 30px;
+			}
+		#Cover IMG {
+		    max-height: 100%;
+		    }
+	</style>
+</head>
+<body class="list" style="-webkit-transform: none; ">
+	<header class="caption">
+		<h1>Node.js</h1>
+		<p>Behrang Noroozinia</p>
+	</header>
+	<div class="slide bg" id="Cover"><div>
+		<section>
+			<header>
+				<h2>Behrang Noroozinia<br>September 7, 2011</h2>
+			</header>
+			<img src="pictures/cover.png" alt="Node.js">
+		</section>
+	</div></div>
+	<div class="slide" id="Node.js"><div>
+		<section>
+			<header>
+				<h2>Node.js</h2>
+			</header>
+			<ul>
+			    <li>A set of bindings to the V8 JavaScript VM.</li>
+			    <li>Allowes one to script programs that do I/O in JavaScript.</li>
+			    <li>Focused on performance.</li>
+			    <li>Like a general purpose programming language.</li>
+			    <li>Used on server, client, shell scripting, ...</li>
+			    <li><a href="http://nodejs.org/" target="_blank">http://nodejs.org/</a></li>
+			</ul>
+		</section>
+	</div></div>
+	<div class="slide" id="GoogleV8"><div>
+		<section>
+			<header>
+				<h2>Google V8</h2>
+			</header>
+			<p>Open source JavaScript engine, developed by Google, shipped with Google Chrome browser.</p>
+			<p>Compiles JavaScript to native machine code instead of executing bytecode or interpreting it.</p>
+			<p>Employs optimization techniques for better performance.</p>
+		</section>
+	</div></div>
+	<div class="slide shout" id="DifferentIO"><div>
+		<section>
+			<header>
+				<h2>I/O needs to be done differently</h2>
+			</header>
+		</section>
+	</div></div>
+	<div class="slide" id="WhatIsTheSoftwareDoingWhileItWaits1"><div>
+		<section>
+			<header>
+				<h2>What is the software doing while it queries the database?</h2>
+			</header>
+			<div><div id="highlighter_480477" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2 highlighted">1</div><div class="line number2 index1 alt1">2</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2 highlighted"><code class="js plain">result = db.query(</code><code class="js string">"select * from T"</code><code class="js plain">);</code></div><div class="line number2 index1 alt1"><code class="js comments">// use result</code></div></div></td></tr></tbody></table></div></div>
+		</section>
+	</div></div>
+	<div class="slide" id="WhatIsTheSoftwareDoingWhileItWaits2"><div>
+		<section>
+			<header>
+				<h2>What is the software doing while it queries the database?</h2>
+			</header>
+			<div><div id="highlighter_478031" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2 highlighted">1</div><div class="line number2 index1 alt1">2</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2 highlighted"><code class="js plain">result = db.query(</code><code class="js string">"select * from T"</code><code class="js plain">);</code></div><div class="line number2 index1 alt1"><code class="js comments">// use result</code></div></div></td></tr></tbody></table></div></div>
+		    <p><mark>In many cases, just waiting for the response.</mark></p>
+		</section>
+	</div></div>
+	<div class="slide" id="ModernComputerLatency"><div>
+		<section>
+			<header>
+				<h2>Modern Computer Latency</h2>
+			</header>
+			<p>
+			    L1: 3 cycles<br>
+			    L2: 14 cycles<br>
+			    RAM: 250 cycles<br>
+			    -----------------------<br>
+		        DISK: 41,000,000 cycles<br>
+		        NETWORK: 240,000,000 cycles<br>
+		    </p>
+		    <p class="reference">
+		        <a href="http://duartes.org/gustavo/blog/post/what-your-computer-does-while-you-wait" target="_blank">
+        	        http://duartes.org/gustavo/blog/post/what-your-computer-does-while-you-wait
+	            </a>
+            </p>
+		</section>
+	</div></div>
+	<div class="slide" id="NonblockingAndBlocking"><div>
+		<section>
+			<header>
+				<h2>Non-blocking and Blocking</h2>
+			</header>
+			<p>
+			    <strong>"Non-blocking"</strong><br>
+			    L1, L2, RAM<br>
+			    -----------------------<br>
+			    <strong>"Blocking"</strong><br>
+		        DISK, NETWORK<br>
+		    </p>
+		</section>
+	</div></div>
+	<div class="slide" id="Multitask"><div>
+		<section>
+			<header>
+				<h2>Multitask</h2>
+			</header>
+			<p>Better software can multitask.</p>
+			<p>Other threads of execution can run while waiting.</p>
+		</section>
+	</div></div>
+	<div class="slide shout" id="IsThatTheBest"><div>
+		<section>
+			<header>
+				<h2>Is that the best that can be done?</h2>
+			</header>
+		</section>
+	</div></div>
+	<div class="slide" id="ApacheNGINXRequestPerSecond"><div>
+		<section>
+			<header>
+				<h2>Apache vs. NGINX - Requests per Second</h2>
+			</header>
+			<img src="pictures/nginx-apache-reqs-sec.png" alt="Comparing Apache and NGINGX by requests per second" class="middle">
+			<p class="reference">
+	            <a href="http://blog.webfaction.com/a-little-holiday-present" target="_blank">
+        	        http://blog.webfaction.com/a-little-holiday-present
+                </a>
+            </p>
+		</section>
+	</div></div>
+	<div class="slide" id="ApacheNGINXMemoryUsage"><div>
+		<section>
+			<header>
+				<h2>Apache vs. NGINX - Memory Usage</h2>
+			</header>
+			<img src="pictures/nginx-apache-memory.png" alt="Comparing Apache and NGINGX by memory usage" class="middle">
+			<p class="reference">
+	            <a href="http://blog.webfaction.com/a-little-holiday-present" target="_blank">
+        	        http://blog.webfaction.com/a-little-holiday-present
+                </a>
+            </p>
+		</section>
+	</div></div>
+	<div class="slide" id="ApacheNGINXDifference"><div>
+		<section>
+			<header>
+				<h2>Apache vs. NGINX - The Difference?</h2>
+			</header>
+			<p>Apache uses <strong>one thread per connection</strong>.</p>
+			<p>NGINX doesn't use threads. It uses an <strong>event loop</strong>.</p>
+		</section>
+	</div></div>
+	<div class="slide" id="EventLoop"><div>
+		<section>
+			<header>
+				<h2>Event Loop</h2>
+			</header>
+			<p>A loop that waits for events (I/O availability, timeout, UI interaction, ...).</p>
+			<p>When an event is available, it will be processed by executing a callback.</p>
+		</section>
+	</div></div>
+	<div class="slide" id="MultithreadProblems"><div>
+		<section>
+			<header>
+				<h2>Multithread Problems</h2>
+			</header>
+			<ul>
+			    <li>Context switching is not free</li>
+			    <li>Execution stacks take up memory</li>
+		    </ul>
+		    <p>For massive concurrency, <strong>cannot</strong> use an OS thread for each connection.</p>
+		</section>
+	</div></div>
+	<div class="slide" id="ThreadsAreEvil"><div>
+		<section>
+			<header>
+				<h2>Threads Are Evil</h2>
+			</header>
+			<blockquote cite="Douglas Crockford">
+			    <ul style="margin-left: 35px;">
+			        <li>In systems programming, threads are a necessary evil.</li>
+			        <li>In application programming, threads are just evil.</li>
+			        <li>Threads provide a deceptively simple model of concurrency.</li>
+			        <li>Threads are subject to races and deadlocks.</li>
+			    </ul>
+			</blockquote>
+		</section>
+	</div></div>
+	<div class="slide" id="MutualExclusion"><div>
+		<section>
+			<header>
+				<h2>Mutual Exclusion</h2>
+			</header>
+			<blockquote cite="Douglas Crockford">
+			    <p>Semaphore, Monitor, Rendezvous, Synchronization</p>
+			    <ul style="margin-left: 35px;">
+			        <li>This used to be operating system stuff.</li>
+			        <li>It has leaked into applications because of networking and the multi-core problem.</li>
+			    </ul>
+			</blockquote>
+		</section>
+	</div></div>
+	<div class="slide" id="BlockingCode"><div>
+		<section>
+			<header>
+				<h2>Blockiong Code</h2>
+			</header>
+			<p>Code like this:</p>
+			<div><div id="highlighter_529102" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2 highlighted">1</div><div class="line number2 index1 alt1">2</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2 highlighted"><code class="js plain">result = query(</code><code class="js string">"select..."</code><code class="js plain">);</code></div><div class="line number2 index1 alt1"><code class="js comments">// use result</code></div></div></td></tr></tbody></table></div></div>
+		    <p>either <strong>blocks the entire OS thread</strong> or implies <strong>multiple execution stacks</strong>.</p>
+		</section>
+	</div></div>
+	<div class="slide" id="NonblockingCode"><div>
+		<section>
+			<header>
+				<h2>Non-blockiong Code</h2>
+			</header>
+			<p>But a code like this:</p>
+			<div><div id="highlighter_292725" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2 highlighted">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2 highlighted"><code class="js plain">query(</code><code class="js string">"select..."</code><code class="js plain">, </code><code class="js keyword">function</code> <code class="js plain">(result) {</code></div><div class="line number2 index1 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js comments">// use result</code></div><div class="line number3 index2 alt2"><code class="js plain">});</code></div></div></td></tr></tbody></table></div></div>
+		    <p>allows the program to return to the event loop immediately.</p>
+		</section>
+	</div></div>
+	<div class="slide" id="HowIOShouldBeDone"><div>
+		<section>
+			<header>
+				<h2>This is how I/O should be done</h2>
+			</header>
+			<div><div id="highlighter_645197" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2 highlighted">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2 highlighted"><code class="js plain">query(</code><code class="js string">"select..."</code><code class="js plain">, </code><code class="js keyword">function</code> <code class="js plain">(result) {</code></div><div class="line number2 index1 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js comments">// use result</code></div><div class="line number3 index2 alt2"><code class="js plain">});</code></div></div></td></tr></tbody></table></div></div>
+		</section>
+	</div></div>
+	<div class="slide" id="WhyNotUsed"><div>
+		<section>
+			<header>
+				<h2>So why isn't everyone using event loops, callbacks, and non-blocking I/O?</h2>
+			</header>
+			<p>For reasons both <strong>cultural</strong> and <strong>infrastructural</strong>.</p>
+		</section>
+	</div></div>
+	<div class="slide" id="CulturalBias1"><div>
+		<section>
+			<header>
+				<h2>Cultural Bias</h2>
+			</header>
+			<p>We're tought I/O with this:</p>
+			<div><div id="highlighter_20920" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1 highlighted">2</div><div class="line number3 index2 alt2">3</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js plain">puts(</code><code class="js string">"Enter your name: "</code><code class="js plain">);</code></div><div class="line number2 index1 alt1 highlighted"><code class="js plain">name = gets();</code></div><div class="line number3 index2 alt2"><code class="js plain">puts(</code><code class="js string">"Name: "</code> <code class="js plain">+ name);</code></div></div></td></tr></tbody></table></div></div>
+		    <p>We're tought to demand input and do nothing until we have it.</p>
+		</section>
+	</div></div>
+	<div class="slide" id="CulturalBias2"><div>
+		<section>
+			<header>
+				<h2>Cultural Bias</h2>
+			</header>
+			<p>Code like</p>
+			<div><div id="highlighter_332110" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1 highlighted">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js plain">puts(</code><code class="js string">"Enter your name: "</code><code class="js plain">);</code></div><div class="line number2 index1 alt1 highlighted"><code class="js plain">gets(</code><code class="js keyword">function</code> <code class="js plain">(name) {</code></div><div class="line number3 index2 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">puts(</code><code class="js string">"Name: "</code> <code class="js plain">+ name);</code></div><div class="line number4 index3 alt1"><code class="js plain">});</code></div></div></td></tr></tbody></table></div></div>
+		    <p>is rejected as too complicated.</p>
+		</section>
+	</div></div>
+	<div class="slide" id="MissingInfrastructure1"><div>
+		<section>
+			<header>
+				<h2>Missing Infrastructure</h2>
+			</header>
+			<p><em>So why isn't everyone using event loops?</em></p>
+		    <p>Single threaded event loops require I/O to be non-blocking.</p>
+		    <p>Most libraries are not.</p>
+		</section>
+	</div></div>
+	<div class="slide" id="MissingInfrastructure2"><div>
+		<section>
+			<header>
+				<h2>Missing Infrastructure</h2>
+			</header>
+			<ul>
+			    <li>POSIX async file I/O not available</li>
+			    <li>MAN pages don't state if a function will access the disk</li>
+			    <li>No closures or anonymous functions in C; makes callbacks difficult</li>
+			    <li>Database libraries (e.g. <code>libmysql_client</code>) do not provide support for asynchronous queries</li>
+			    <li>Asynchronous DNS resolution not standard on most systems</li>
+			</ul>
+		</section>
+	</div></div>
+	<div class="slide" id="TooMuchInfrastructure"><div>
+		<section>
+			<header>
+				<h2>Too Much Infrastructure</h2>
+			</header>
+			<p>EventMachine, Twisted, AnyEvent provide very good event platforms.</p>
+			<p>Easy to create efficent servers.</p>
+			<p>But users are confused how to combine with other available libraries.</p>
+			<p>Users still require expert knowledge of event loops, non-blocking I/O.</p>
+		</section>
+	</div></div>
+	<div class="slide" id="JavaScriptToTheRescue"><div>
+		<section>
+			<header>
+				<h2>JavaScript To The Rescue</h2>
+			</header>
+			<p>JavaScript designed specifically to be used with an event loop:</p>
+			<ul>
+			    <li>Anonymous functions, closures</li>
+			    <li>Only one callback at a time</li>
+			    <li>I/O through DOM event callbacks</li>
+			</ul>
+			<p>The culture of JavaScript is already geared towards evented programming.</p>
+		</section>
+	</div></div>
+	<div class="slide" id="NodeJSProject"><div>
+		<section>
+			<header>
+				<h2>Node.js Project</h2>
+			</header>
+			<p>To provide a <strong>purely evented</strong>, <strong>non-blocking infrastructure</strong> to script <strong>highly concurrent</strong> programs.</p>
+			<p>
+			    <img align="left" src="pictures/ryan-dahl.jpg" alt="Photo of Ryan Dahl" width="200">
+			    <img align="right" src="pictures/Joyent.png" alt="Joyent Logo" width="200">
+			    Created by Ryan Dahl<br>
+			    Sponsored by Joyent
+			</p>
+		</section>
+	</div></div>
+	<div class="slide" id="GitHubPopularProjects"><div>
+		<section>
+			<header>
+				<h2>GitHub's Popular Wached Repositories</h2>
+			</header>
+			<p></p>
+			<img src="pictures/Popular Watched Repositories - GitHub.png" alt="Node.js is second in GitHub's Popular Watched Repositories" height="400" class="middle">
+			<p class="reference">
+			September 3, 2011
+			    <a href="https://github.com/popular/watched" target="_blank">
+			        https://github.com/popular/watched
+			    </a>
+			</p>
+		</section>
+	</div></div>
+	<div class="slide shout" id="Examples"><div>
+		<section>
+			<header>
+				<h2>Examples</h2>
+			</header>
+		</section>
+	</div></div>
+	<div class="slide" id="HelloWorld"><div>
+		<section>
+			<header>
+				<h2>Hello World</h2>
+			</header>
+			<div><div id="highlighter_217602" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js plain">console.log(</code><code class="js string">'hello world'</code><code class="js plain">);</code></div></div></td></tr></tbody></table></div></div>
+		</section>
+	</div></div>
+	<div class="slide" id="HelloWorldAdvanced1"><div>
+		<section>
+			<header>
+				<h2>Hello World, Advanced!</h2>
+			</header>
+			<div><div id="highlighter_423673" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2 highlighted">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2 highlighted">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2 highlighted"><code class="js plain">setTimeout(</code><code class="js keyword">function</code><code class="js plain">() {</code></div><div class="line number2 index1 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">console.log(</code><code class="js string">'world'</code><code class="js plain">);</code></div><div class="line number3 index2 alt2 highlighted"><code class="js plain">}, 2000);</code></div><div class="line number4 index3 alt1">&nbsp;</div><div class="line number5 index4 alt2"><code class="js plain">console.log(</code><code class="js string">'hello'</code><code class="js plain">);</code></div></div></td></tr></tbody></table></div></div>
+		</section>
+	</div></div>
+	<div class="slide" id="HelloWorldAdvanced2"><div>
+		<section>
+			<header>
+				<h2>Hello World, Advanced!</h2>
+			</header>
+			<div><div id="highlighter_564080" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2 highlighted">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2 highlighted">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2 highlighted"><code class="js plain">setTimeout(</code><code class="js keyword">function</code><code class="js plain">() {</code></div><div class="line number2 index1 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">console.log(</code><code class="js string">'world'</code><code class="js plain">);</code></div><div class="line number3 index2 alt2 highlighted"><code class="js plain">}, 2000);</code></div><div class="line number4 index3 alt1">&nbsp;</div><div class="line number5 index4 alt2"><code class="js plain">console.log(</code><code class="js string">'hello'</code><code class="js plain">);</code></div></div></td></tr></tbody></table></div></div>
+		    <p>A program which prints "hello", waits 2 seconds, outputs "world", and then exits.</p>
+		    <p>Node exits automatically when there is nothing else to do.</p>
+		</section>
+	</div></div>
+	<div class="slide" id="HelloLoop1"><div>
+		<section>
+			<header>
+				<h2>Hello Loop</h2>
+			</header>
+		    <p>Change the "hello world" program to loop forever, but print an exit message when the user kills it.</p>
+		    <p>Special object <code>process</code> and <code>SIGINT</code> signal should be used.</p>
+		</section>
+	</div></div>
+	<div class="slide" id="HelloLoop2"><div>
+		<section>
+			<header>
+				<h2>Hello Loop</h2>
+			</header>
+			<div><div id="highlighter_272169" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2 highlighted">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js plain">setInterval(</code><code class="js keyword">function</code><code class="js plain">() {</code></div><div class="line number2 index1 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">console.log(</code><code class="js string">'hello'</code><code class="js plain">);</code></div><div class="line number3 index2 alt2"><code class="js plain">}, 500);</code></div><div class="line number4 index3 alt1">&nbsp;</div><div class="line number5 index4 alt2 highlighted"><code class="js plain">process.addListener(</code><code class="js string">'SIGINT'</code><code class="js plain">, </code><code class="js keyword">function</code><code class="js plain">() {</code></div><div class="line number6 index5 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">console.log(</code><code class="js string">'goodbye'</code><code class="js plain">);</code></div><div class="line number7 index6 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">process.exit(0);</code></div><div class="line number8 index7 alt1"><code class="js plain">});</code></div></div></td></tr></tbody></table></div></div>
+            <p>The <code>process</code> object emits an event when it receives a signal. Like in the DOM, you need only to add a listener to catch them.</p>
+		</section>
+	</div></div>
+	<div class="slide" id="DNSResolver1"><div>
+		<section>
+			<header>
+				<h2>DNS Resolver</h2>
+			</header>
+		    <p>Write a program which resolves google.com and prints its IP addresses.</p>
+		    <p>Built-in module called <code>dns</code> is for working with DNS.</p>
+		    <p>Resolving DNS takes some time but a lot of APIs let you think things happen instantly.</p>
+		    <p>We can allow the program to continue while it waits for the response.</p>
+		</section>
+	</div></div>
+	<div class="slide" id="DNSResolver2"><div>
+		<section>
+			<header>
+				<h2>DNS Resolver</h2>
+			</header>
+			<div><div id="highlighter_451877" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2 highlighted">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2 highlighted">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2 highlighted"><code class="js keyword">var</code> <code class="js plain">dns = require(</code><code class="js string">'dns'</code><code class="js plain">);</code></div><div class="line number2 index1 alt1">&nbsp;</div><div class="line number3 index2 alt2"><code class="js plain">console.log(</code><code class="js string">'resolving google.com...'</code><code class="js plain">);</code></div><div class="line number4 index3 alt1">&nbsp;</div><div class="line number5 index4 alt2 highlighted"><code class="js plain">dns.resolve(</code><code class="js string">'google.com'</code><code class="js plain">, </code><code class="js keyword">function</code> <code class="js plain">(err, addresses) {</code></div><div class="line number6 index5 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js keyword">if</code> <code class="js plain">(err) {</code></div><div class="line number7 index6 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js keyword">throw</code> <code class="js plain">err;</code></div><div class="line number8 index7 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">}</code></div><div class="line number9 index8 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">console.log(</code><code class="js string">'found: '</code><code class="js plain">, addresses);</code></div><div class="line number10 index9 alt1"><code class="js plain">});</code></div></div></td></tr></tbody></table></div></div>
+		</section>
+	</div></div>
+	<div class="slide" id="DNSResolver3"><div>
+		<section>
+			<header>
+				<h2>DNS Resolver</h2>
+			</header>
+		    <p>It runs very quickly. But millions of clock cycles passed.</p>
+		    <p>We can't perceive 2 microseconds.</p>
+		    <p>In a server environment, since handling many clients, waiting millions of clock cycles is wasteful.</p>
+		</section>
+	</div></div>
+	<div class="slide" id="SimpleHTTPServer"><div>
+		<section>
+			<header>
+				<h2>A Simple HTTP Server</h2>
+			</header>
+			<div><div id="highlighter_497258" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2 highlighted">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2 highlighted">9</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js keyword">var</code> <code class="js plain">http = require(</code><code class="js string">'http'</code><code class="js plain">);</code></div><div class="line number2 index1 alt1">&nbsp;</div><div class="line number3 index2 alt2 highlighted"><code class="js keyword">var</code> <code class="js plain">s = http.createServer(</code><code class="js keyword">function</code> <code class="js plain">(req, res) {</code></div><div class="line number4 index3 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">res.writeHead(200);</code></div><div class="line number5 index4 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">res.end(</code><code class="js string">'hello world\n'</code><code class="js plain">);</code></div><div class="line number6 index5 alt1"><code class="js plain">});</code></div><div class="line number7 index6 alt2">&nbsp;</div><div class="line number8 index7 alt1"><code class="js comments">// listen on port 8000</code></div><div class="line number9 index8 alt2 highlighted"><code class="js plain">s.listen(8000);</code></div></div></td></tr></tbody></table></div></div>
+		</section>
+	</div></div>
+	<div class="slide" id="StreamingHTTPServer"><div>
+		<section>
+			<header>
+				<h2>Streaming HTTP Server</h2>
+			</header>
+			<div><div id="highlighter_281538" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1 highlighted">6</div><div class="line number7 index6 alt2 highlighted">7</div><div class="line number8 index7 alt1 highlighted">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2 highlighted">11</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js keyword">var</code> <code class="js plain">http = require(</code><code class="js string">'http'</code><code class="js plain">);</code></div><div class="line number2 index1 alt1">&nbsp;</div><div class="line number3 index2 alt2"><code class="js plain">http.createServer(</code><code class="js keyword">function</code> <code class="js plain">(req, res) {</code></div><div class="line number4 index3 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">res.writeHead(200);</code></div><div class="line number5 index4 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</div><div class="line number6 index5 alt1 highlighted"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">setTimeout(</code><code class="js keyword">function</code> <code class="js plain">() {</code></div><div class="line number7 index6 alt2 highlighted"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">res.end(</code><code class="js string">'world\n'</code><code class="js plain">);</code></div><div class="line number8 index7 alt1 highlighted"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">}, 2000);</code></div><div class="line number9 index8 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</div><div class="line number10 index9 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">res.write(</code><code class="js string">'hello\n'</code><code class="js plain">);</code></div><div class="line number11 index10 alt2 highlighted"><code class="js plain">}).listen(8000);</code></div></div></td></tr></tbody></table></div></div>
+		</section>
+	</div></div>
+	<div class="slide" id="WebBasedDNSResolver1"><div>
+		<section>
+			<header>
+				<h2>Web Based DNS Resolver</h2>
+			</header>
+			Requesting <code>http://localhost:8000/yahoo.com</code> should return:
+			<pre><code>query: yahoo.com</code>
+			<code>["98.137.149.56","209.191.122.70","67.195.160.76"]</code></pre>
+			Requesting <code>http://localhost:8000/google.com</code> should return:
+			<pre><code>query: google.com</code>
+			<code>["74.125.39.99","74.125.39.103","74.125.39.104"]</code></pre>
+		</section>
+	</div></div>
+	<div class="slide" id="WebBasedDNSResolver2"><div>
+		<section>
+			<header>
+				<h2>Web Based DNS Resolver</h2>
+			</header>
+			<div><div id="highlighter_909919" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1 highlighted">8</div><div class="line number9 index8 alt2 highlighted">9</div><div class="line number10 index9 alt1 highlighted">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js keyword">var</code> <code class="js plain">http = require(</code><code class="js string">'http'</code><code class="js plain">);</code></div><div class="line number2 index1 alt1"><code class="js keyword">var</code> <code class="js plain">dns = require(</code><code class="js string">'dns'</code><code class="js plain">);</code></div><div class="line number3 index2 alt2">&nbsp;</div><div class="line number4 index3 alt1"><code class="js plain">http.createServer(</code><code class="js keyword">function</code> <code class="js plain">(req, res) {</code></div><div class="line number5 index4 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js keyword">var</code> <code class="js plain">query = req.url.replace(</code><code class="js string">'/'</code><code class="js plain">, </code><code class="js string">''</code><code class="js plain">);</code></div><div class="line number6 index5 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">res.write(</code><code class="js string">'query: '</code> <code class="js plain">+ query + </code><code class="js string">'\n'</code><code class="js plain">);</code></div><div class="line number7 index6 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</div><div class="line number8 index7 alt1 highlighted"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">dns.resolve(query, </code><code class="js keyword">function</code> <code class="js plain">(err, addresses) {</code></div><div class="line number9 index8 alt2 highlighted"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">res.end(JSON.stringify(addresses) + </code><code class="js string">'\n'</code><code class="js plain">);</code></div><div class="line number10 index9 alt1 highlighted"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">});</code></div><div class="line number11 index10 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</div><div class="line number12 index11 alt1"><code class="js plain">}).listen(8000);</code></div></div></td></tr></tbody></table></div></div>
+		</section>
+	</div></div>
+	<div class="slide" id="WebBasedDNSResolver3"><div>
+		<section>
+			<header>
+				<h2>Web Based DNS Resolver</h2>
+			</header>
+			<ul>
+			    <li>DNS resolution is async</li>
+			    <li>HTTP server "streams" the response</li>
+			</ul>
+			<p>The overhead of each connection is low so the server is able to achive good concurrency: it juggles many connections at a time.</p>
+		</section>
+	</div></div>
+	<div class="slide" id="TCPServer1"><div>
+		<section>
+			<header>
+				<h2>TCP Server</h2>
+			</header>
+			<p>Write a program which:</p>
+			<ul>
+			    <li>Starts a TCP server on port 8000</li>
+			    <li>Sends the peer a message</li>
+			    <li>Closes the connection</li>
+			</ul>
+		</section>
+	</div></div>
+	<div class="slide" id="TCPServer2"><div>
+		<section>
+			<header>
+				<h2>TCP Server</h2>
+			</header>
+			<div><div id="highlighter_664560" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2 highlighted">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js keyword">var</code> <code class="js plain">net = require(</code><code class="js string">'net'</code><code class="js plain">);</code></div><div class="line number2 index1 alt1">&nbsp;</div><div class="line number3 index2 alt2 highlighted"><code class="js plain">net.createServer(</code><code class="js keyword">function</code> <code class="js plain">(socket) {</code></div><div class="line number4 index3 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">socket.end(</code><code class="js string">'Goodbye\n'</code><code class="js plain">);</code></div><div class="line number5 index4 alt2"><code class="js plain">}).listen(8000);</code></div></div></td></tr></tbody></table></div></div>
+		</section>
+	</div></div>
+	<div class="slide" id="TCPChatServer"><div>
+		<section>
+			<header>
+				<h2>TCP Chat Server</h2>
+			</header>
+			<div><div id="highlighter_393090" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2 highlighted">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1 highlighted">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1 highlighted">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js keyword">var</code> <code class="js plain">net = require(</code><code class="js string">'net'</code><code class="js plain">);</code></div><div class="line number2 index1 alt1">&nbsp;</div><div class="line number3 index2 alt2 highlighted"><code class="js keyword">var</code> <code class="js plain">people = [];</code></div><div class="line number4 index3 alt1">&nbsp;</div><div class="line number5 index4 alt2"><code class="js plain">net.createServer(</code><code class="js keyword">function</code> <code class="js plain">(socket) {</code></div><div class="line number6 index5 alt1 highlighted"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">people.push(socket);</code></div><div class="line number7 index6 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">socket.on(</code><code class="js string">'data'</code><code class="js plain">, </code><code class="js keyword">function</code> <code class="js plain">(data) {</code></div><div class="line number8 index7 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">people.forEach(</code><code class="js keyword">function</code> <code class="js plain">(person) {</code></div><div class="line number9 index8 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js keyword">if</code> <code class="js plain">(person != socket &amp;&amp; person.writable)</code></div><div class="line number10 index9 alt1 highlighted"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">person.write(data);</code></div><div class="line number11 index10 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">});</code></div><div class="line number12 index11 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">});</code></div><div class="line number13 index12 alt2"><code class="js plain">}).listen(8000);</code></div></div></td></tr></tbody></table></div></div>
+		</section>
+	</div></div>
+	<div class="slide" id="TCPChatServerWithHTTPView"><div>
+		<section>
+			<header>
+				<h2>TCP Chat Server With HTTP View</h2>
+			</header>
+			<div><div id="highlighter_228617" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1 highlighted">6</div><div class="line number7 index6 alt2">7</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js keyword">var</code> <code class="js plain">http = require(</code><code class="js string">'http'</code><code class="js plain">);</code></div><div class="line number2 index1 alt1"><code class="js comments">// ... TCP chat server code omitted</code></div><div class="line number3 index2 alt2"><code class="js comments">// ... it is listening on 8000</code></div><div class="line number4 index3 alt1"><code class="js plain">http.createServer(</code><code class="js keyword">function</code> <code class="js plain">(req, res) {</code></div><div class="line number5 index4 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">res.writeHead(200);</code></div><div class="line number6 index5 alt1 highlighted"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">people.push(res);</code></div><div class="line number7 index6 alt2"><code class="js plain">}).listen(8001);</code></div></div></td></tr></tbody></table></div></div>
+            <p>A single process is listening on both 8000 and 8001 ports, and everything is handled because node.js has non-blocking I/O.</p>
+		</section>
+	</div></div>
+	<div class="slide" id="NPM"><div>
+		<section>
+			<header>
+				<h2>Node.js Package Manager</h2>
+			</header>
+			<p>
+			    <img src="pictures/npm.png" alt="NPM Logo" align="right" width="300">
+			    <code>npm</code> is a package manager for node. You can use it to install and publish your node programs. It manages dependencies and does other cool stuff.
+		    </p>
+			<pre><code>curl http://npmjs.org/install.sh | sh</code></pre>
+			<p class="reference">
+			    <a href="http://npmjs.org/" target="_blank">
+			        http://npmjs.org/
+		        </a>
+			</p>
+		</section>
+	</div></div>
+	<div class="slide" id="NPMUsage"><div>
+		<section>
+			<header>
+				<h2>NPM Usage</h2>
+			</header>
+			<pre><code>npm install -g connect</code></pre>
+		</section>
+	</div></div>
+	<div class="slide" id="Connect"><div>
+		<section>
+			<header>
+				<h2>Connect</h2>
+			</header>
+			<ul>
+			    <li>Node.js is very powerful but handling everything in web like cookie, session, logging is hard.</li>
+			    <li>Connect is an extensible HTTP server framework for node, providing high performance "plugins" known as middleware.</li>
+			    <li>Connect is bundled with over 14 commonly used middleware, including a logger, session support, cookie parser, and more.</li>
+			</ul>
+			<p class="reference">
+			    <a href="http://senchalabs.github.com/connect/" target="_blank">
+			        http://senchalabs.github.com/connect/
+		        </a>
+			</p>
+		</section>
+	</div></div>
+	<div class="slide" id="ConnectSample"><div>
+		<section>
+			<header>
+				<h2>Connect Sample</h2>
+			</header>
+			<div><div id="highlighter_378849" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js keyword">var</code> <code class="js plain">connect = require(</code><code class="js string">'connect'</code><code class="js plain">);</code></div><div class="line number2 index1 alt1">&nbsp;</div><div class="line number3 index2 alt2"><code class="js plain">connect.createServer(</code></div><div class="line number4 index3 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">connect.static(__dirname + </code><code class="js string">'/public'</code><code class="js plain">),</code></div><div class="line number5 index4 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">connect.favicon(),</code></div><div class="line number6 index5 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">connect.logger(),</code></div><div class="line number7 index6 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">connect.errorHandler(),</code></div><div class="line number8 index7 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">connect.bodyParser(),</code></div><div class="line number9 index8 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">connect.cookieParser(),</code></div><div class="line number10 index9 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">connect.session({</code><code class="js string">'secret'</code><code class="js plain">: </code><code class="js string">'password'</code><code class="js plain">})</code></div><div class="line number11 index10 alt2"><code class="js plain">).listen(8000);</code></div></div></td></tr></tbody></table></div></div>
+		</section>
+	</div></div>
+	<div class="slide" id="Express"><div>
+		<section>
+			<header>
+				<h2>Express</h2>
+			</header>
+			<ul>
+			    <li>High performance, high class web development for Node.js</li>
+			    <li>It's like Sinatra from the Ruby world</li>
+			</ul>
+			<div><div id="highlighter_452400" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2 highlighted">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js keyword">var</code> <code class="js plain">express = require(</code><code class="js string">'express'</code><code class="js plain">);</code></div><div class="line number2 index1 alt1"><code class="js keyword">var</code> <code class="js plain">app = express.createServer();</code></div><div class="line number3 index2 alt2 highlighted"><code class="js plain">app.get(</code><code class="js string">'/'</code><code class="js plain">, </code><code class="js keyword">function</code><code class="js plain">(req, res){</code></div><div class="line number4 index3 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">res.send(</code><code class="js string">'Hello World'</code><code class="js plain">);</code></div><div class="line number5 index4 alt2"><code class="js plain">});</code></div><div class="line number6 index5 alt1"><code class="js plain">app.listen(3000);</code></div></div></td></tr></tbody></table></div></div>
+			<p class="reference">
+			    <a href="http://expressjs.com/" target="_blank">
+			        http://expressjs.com/
+		        </a>
+			</p>
+		</section>
+	</div></div>
+	<div class="slide" id="ExpressFeatures"><div>
+		<section>
+			<header>
+				<h2>Express Features</h2>
+			</header>
+			<ul>
+			    <li>Robust routing</li>
+			    <li>Redirection helpers</li>
+			    <li>Dynamic view helpers</li>
+			    <li>Content negotiation</li>
+			    <li>View rendering and partials support</li>
+			    <li>Session based flash notifications</li>
+			    <li>Built on Connect</li>
+			</ul>
+		</section>
+	</div></div>
+	<div class="slide shout" id="ParallelProgramming"><div>
+		<section>
+			<header>
+				<h2>Parallel Programming</h2>
+			</header>
+		</section>
+	</div></div>
+	<div class="slide" id="Node.jsAndMultiCore"><div>
+		<section>
+			<header>
+				<h2>Node.js And Multicore CPUs</h2>
+			</header>
+			<p>Node.js is inherently single threaded (and arguably JavaScript too).</p>
+			<p>Single threaded means that a Node process can only use one core.</p>
+			<p>Node is good at <strong>concurrency</strong>, but how to run code in <strong>parallel</strong> with it?</p>
+		</section>
+	</div></div>
+	<div class="slide" id="RunningCodeInParallel"><div>
+		<section>
+			<header>
+				<h2>Running Code in Parallel</h2>
+			</header>
+			<ul>
+			    <li>Use processes</li>
+			    <li>Pass messages</li>
+			    <li>Allow the OS scheduler to run processes</li>
+			</ul>
+			<p>Node's focus on asynchronous networking makes IPC easy, and thus parallel programming easy.</p>
+		</section>
+	</div></div>
+	<div class="slide" id="WebWorkers"><div>
+		<section>
+			<header>
+				<h2>Web Workers</h2>
+			</header>
+			<ul>
+			    <li>An HTML5 spec adapted for node.js</li>
+			    <li>Each worker is a real OS process</li>
+			    <li>Communicate with each other through sockets</li>
+			    <li>Each process is able to send and receive messages (actor-style)</li>
+			    <li>Useful to take heavy calculations out of a server</li>
+			</ul>
+		</section>
+	</div></div>
+	<div class="slide" id="WebWorkersExample"><div>
+		<section>
+			<header>
+				<h2>Web Workers Example</h2>
+			</header>
+			<div><div id="highlighter_588794" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2 highlighted">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2 highlighted">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2 highlighted">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2 highlighted"><code class="js keyword">var</code> <code class="js plain">w = </code><code class="js keyword">new</code> <code class="js plain">Worker(</code><code class="js string">'fib.js'</code><code class="js plain">);</code></div><div class="line number2 index1 alt1">&nbsp;</div><div class="line number3 index2 alt2 highlighted"><code class="js plain">w.postMessage({ calculate: 10 });</code></div><div class="line number4 index3 alt1">&nbsp;</div><div class="line number5 index4 alt2 highlighted"><code class="js plain">w.onmessage = </code><code class="js keyword">function</code><code class="js plain">(m) {</code></div><div class="line number6 index5 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;</code><code class="js plain">console.log(</code><code class="js string">'result: %j'</code><code class="js plain">, m);</code></div><div class="line number7 index6 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">w.terminate();</code></div><div class="line number8 index7 alt1"><code class="js plain">};</code></div></div></td></tr></tbody></table></div></div>
+		</section>
+	</div></div>
+	<div class="slide" id="AcceptConnectionsOnMultipleCores"><div>
+		<section>
+			<header>
+				<h2>How to accept connections on multiple cores?</h2>
+			</header>
+			<ul>
+			    <li>Spawn a copy of yourself N times</li>
+			    <li>Send the server file descriptor to your clones</li>
+			    <li>Accept connections in each process</li>
+			</ul>
+			<p>Effectively allowes the kernel to load balance connections across processes.</p>
+		</section>
+	</div></div>
+	<div class="slide" id="ParentProcess"><div>
+		<section>
+			<header>
+				<h2>Parent Process</h2>
+			</header>
+			<div><div id="highlighter_556560" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2 highlighted">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2 highlighted">13</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js keyword">var</code> <code class="js plain">http = require(</code><code class="js string">'http'</code><code class="js plain">);</code></div><div class="line number2 index1 alt1"><code class="js keyword">var</code> <code class="js plain">net = require(</code><code class="js string">'net'</code><code class="js plain">);</code></div><div class="line number3 index2 alt2"><code class="js comments">// Create a web server</code></div><div class="line number4 index3 alt1"><code class="js keyword">var</code> <code class="js plain">web = http.Server(</code><code class="js keyword">function</code> <code class="js plain">(req, res) {</code></div><div class="line number5 index4 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">res.writeHead(200);</code></div><div class="line number6 index5 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">res.end(</code><code class="js string">'hello world\n'</code><code class="js plain">);</code></div><div class="line number7 index6 alt2"><code class="js plain">});</code></div><div class="line number8 index7 alt1"><code class="js plain">web.listen(8000);</code></div><div class="line number9 index8 alt2"><code class="js comments">// File Descriptor server</code></div><div class="line number10 index9 alt1"><code class="js plain">net.Server(</code><code class="js keyword">function</code> <code class="js plain">(c) {</code></div><div class="line number11 index10 alt2 highlighted"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">c.write(</code><code class="js string">'blah'</code><code class="js plain">, </code><code class="js string">'ascii'</code><code class="js plain">, web.fd);</code></div><div class="line number12 index11 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">c.end();</code></div><div class="line number13 index12 alt2 highlighted"><code class="js plain">}).listen(</code><code class="js string">'/tmp/node_server.sock'</code><code class="js plain">);</code></div></div></td></tr></tbody></table></div></div>
+		</section>
+	</div></div>
+	<div class="slide" id="ChildProcess"><div>
+		<section>
+			<header>
+				<h2>Child Process</h2>
+			</header>
+			<div><div id="highlighter_67162" class="syntaxhighlighter  js"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2 highlighted">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2 highlighted">11</div><div class="line number12 index11 alt1">12</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js keyword">var</code> <code class="js plain">http = require(</code><code class="js string">'http'</code><code class="js plain">);</code></div><div class="line number2 index1 alt1"><code class="js keyword">var</code> <code class="js plain">net = require(</code><code class="js string">'net'</code><code class="js plain">);</code></div><div class="line number3 index2 alt2">&nbsp;</div><div class="line number4 index3 alt1"><code class="js keyword">var</code> <code class="js plain">web = http.Server(</code><code class="js keyword">function</code> <code class="js plain">(req, res) {</code></div><div class="line number5 index4 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">res.writeHead(200);</code></div><div class="line number6 index5 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">res.end(</code><code class="js string">'hello from '</code> <code class="js plain">+ process.pid + </code><code class="js string">'\n'</code><code class="js plain">);</code></div><div class="line number7 index6 alt2"><code class="js plain">});</code></div><div class="line number8 index7 alt1">&nbsp;</div><div class="line number9 index8 alt2 highlighted"><code class="js keyword">var</code> <code class="js plain">c = net.createConnection(</code><code class="js string">'/tmp/node_server.sock'</code><code class="js plain">);</code></div><div class="line number10 index9 alt1"><code class="js plain">c.on(</code><code class="js string">'fd'</code><code class="js plain">, </code><code class="js keyword">function</code> <code class="js plain">(fd) {</code></div><div class="line number11 index10 alt2 highlighted"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">web.listenFD(fd);</code></div><div class="line number12 index11 alt1"><code class="js plain">});</code></div></div></td></tr></tbody></table></div></div>
+		</section>
+	</div></div>
+	<div class="slide" id="Cluster"><div>
+		<section>
+			<header>
+				<h2>Cluster</h2>
+			</header>
+			<p>Extensible multi-core server management for nodejs.</p>
+			<p class="reference">
+			    <a href="http://learnboost.github.com/cluster/" target="_blank">
+			        http://learnboost.github.com/cluster/
+		        </a>
+	        </p>
+		</section>
+	</div></div>
+	<div class="slide" id="References"><div>
+		<section>
+			<header>
+				<h2>References</h2>
+			</header>
+			<ul style="font-size: 20px;">
+				<li><a href="http://nodejs.org/">http://nodejs.org/</a></li>
+				<li><a href="http://howtonode.org/">http://howtonode.org/</a></li>
+				<li><a href="http://npmjs.org/">http://npmjs.org/</a></li>
+				<li><a href="http://senchalabs.github.com/connect/">http://senchalabs.github.com/connect/</a></li>
+				<li><a href="http://expressjs.com/">http://expressjs.com/</a></li>
+				<li><a href="http://learnboost.github.com/cluster/">http://learnboost.github.com/cluster/</a></li>
+				<li><a href="https://github.com/popular/watched">https://github.com/popular/watched</a></li>
+				<li><a hre="http://duartes.org/gustavo/blog/post/what-your-computer-does-while-you-wait">http://duartes.org/gustavo/blog/post/what-your-computer-does-while-you-wait</a></li>
+				<li><a href="http://blog.webfaction.com/a-little-holiday-present">http://blog.webfaction.com/a-little-holiday-present</a></li>
+			</ul>
+		</section>
+	</div></div>
+	<div class="slide" id="ThankYou"><div>
+		<section>
+			<header>
+				<h2>Thank You</h2>
+			</header>
+			<p>Questions?</p>
+			<p>&nbsp;</p>
+			<p>Presentation powered by <a href="https://github.com/pepelsbey/shower" target="_blank">Shower</a></p>
+		</section>
+	</div></div>
+	<div class="progress"><div></div></div>
+	<script src="scripts/script.js"></script>
+	<script src="scripts/shCore.js"></script>
+	<script src="scripts/shBrushJScript.js"></script>
+	<script>SyntaxHighlighter.all();</script>
+	<!-- Copyright © 2011 Behrang Noroozinia, http://github.com/behrang -->
+
+
+</body></html>
