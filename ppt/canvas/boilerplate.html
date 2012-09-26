@@ -69,15 +69,15 @@
 	</h1>
 	<div class="theme-menu">
 		<label for="style-themes">Style Theme:</lebel>
-		<select id="style-themes" onclick="seo()">
-			<option selected="" value="./themes/style/web-2.0.css">Web 2.0</option>
+		<select id="style-themes">
+			<option value="./themes/style/web-2.0.css">Web 2.0</option>
 			<option value="./themes/style/swiss.css">Swiss</option>
 			<option value="./themes/style/neon.css">Neon</option>
 			<option value="">None</option>
 		</select>
 		<label for="transition-themes">Transition Theme:</label>
-		<select id="transition-themes" onclick="seo2()">
-				<option selected="" value="./themes/transition/horizontal-slide.css">Horizontal Slide</option>
+		<select id="transition-themes">
+				<option value="./themes/transition/horizontal-slide.css">Horizontal Slide</option>
 				<option value="./themes/transition/vertical-slide.css">Vertical Slide</option>
 				<option value="./themes/transition/fade.css">Fade</option>
 				<option value="">None</option>
@@ -689,7 +689,7 @@ var data = [ 16, 68, 20, 30, 54 ];
 		</li>
 	</ul>
 	<!-- syntaxhighlighter -->
-	<pre>
+	<pre style="height:auto">
 		<script  type="syntaxhighlighter" class="brush: js">
 			//get a reference to the canvas
 			var canvas = document.getElementById('canvas-chart');
@@ -1113,12 +1113,7 @@ var data = [ 16, 68, 20, 30, 54 ];
 		}
 		loadimg();
 	</script>
-	<div style="position:absolute; top:205px; left:380px; width:400px; height:100px;">
-		<style type="text/css">
-		.syntaxhighlighter {
-			height: 325px;
-		}
-		</style>
+	<div style="position:absolute; top:205px; left:380px; width:50%; height:100px;">
 		<pre class="brush: js; ruler: true;">
 			var canvas = document.getElementById('canvas-ImageData1'); 
 			var ctx = canvas.getContext('2d');
@@ -1321,11 +1316,6 @@ var data = [ 16, 68, 20, 30, 54 ];
 		<canvas width="350" height="180" style='border: 1px solid black; position:absolute; top:260px;'></canvas>
 	</div>
 	<div style="position:absolute; top:245px; left:410px; width:350px; height:290px;">
-		<style type="text/css">
-		.syntaxhighlighter {
-			height: 290px;
-		}
-		</style>
 		<pre class="brush: js; ruler: true;">
 		function testDraw(id, num) {
 			var ctx = $("#"+id+" > canvas")[0].getContext('2d');
@@ -1603,11 +1593,6 @@ var b = c.isPointInPath(200,100);  // returns false</code></pre>
 	</div>
 	<label id="hitpos" style="position:absolute; top:125px; left:60px;"></label>
 	<div style="position:absolute; top:105px; left:360px; width:400px; height:400px;">
-		<style type="text/css">
-		.syntaxhighlighter {
-			height: 400px;
-		}
-		</style>
 		<pre class="brush: js; ruler: true; highlight: [17]">
 		function hitTest() {
 			var canvas = document.getElementById("hittestdemo2");
@@ -1682,11 +1667,6 @@ var b = c.isPointInPath(200,100);  // returns false</code></pre>
 		<canvas id="hittestdemo3" width="300" height="200" style='border: 1px solid black;'></canvas>
 	</div>
 	<div style="position:absolute; top:105px; left:360px; width:400px; height:400px;">
-		<style type="text/css">
-		.syntaxhighlighter {
-			height: 400px;
-		}
-		</style>
 		<pre class="brush: js; ruler: true">
 		function aminoTest() {
 			var amino = new Amino();
@@ -1854,11 +1834,6 @@ var b = c.isPointInPath(200,100);  // returns false</code></pre>
 	</div>
 	<button onclick="simpleAniStart()">start</button>
 	<div style="position:absolute; top:65px; left:360px; width:400px; height:460px;">
-		<style type="text/css">
-		.syntaxhighlighter {
-			height: 460px;
-		}
-		</style>
 		<pre class="brush: js; ruler: true">
 		window.requestAnimFrame = (function(){
 			return  window.requestAnimationFrame || 
@@ -1932,11 +1907,6 @@ var b = c.isPointInPath(200,100);  // returns false</code></pre>
 	<input  style='position:absolute; top:480px;' type="button" value="run snow ani" onclick="jvascript:openNewWindow()"/>
 	<img src="./images/particles.png"  style='border: 1px solid black; position:absolute;'></img>
 	<div style="position:absolute; top:60px; left:280px; width:480px; height:460px;">
-		<style type="text/css">
-		.syntaxhighlighter {
-			height: 460px;
-		}
-		</style>
 		<pre class="brush: js; ruler: true">
 		window.requestAnimFrame = (function(){
 			return  window.requestAnimationFrame || 
@@ -1982,11 +1952,6 @@ var b = c.isPointInPath(200,100);  // returns false</code></pre>
 		<li>less than 100 particles.</li>
 	</ul>
 	<div style="position:absolute; top:60px; left:280px; width:480px; height:460px;">
-		<style type="text/css">
-		.syntaxhighlighter {
-			height: 460px;
-		}
-		</style>
 		<pre class="brush: js; ruler: true">
 		function createParticles() {
 		    //check on every 10th tick check
@@ -2014,11 +1979,6 @@ var b = c.isPointInPath(200,100);  // returns false</code></pre>
 		<li>less than 100 particles.</li>
 	</ul>
 	<div style="position:absolute; top:60px; left:280px; width:480px; height:460px;">
-		<style type="text/css">
-		.syntaxhighlighter {
-			height: 460px;
-		}
-		</style>
 		<pre class="brush: js; ruler: true">
 		function updateParticles() {
 		    for(var i in particles) {
@@ -2038,11 +1998,6 @@ var b = c.isPointInPath(200,100);  // returns false</code></pre>
 		<li>draw each particles</li>
 	</ul>
 	<div style="position:absolute; top:60px; left:280px; width:480px; height:460px;">
-		<style type="text/css">
-		.syntaxhighlighter {
-			height: 460px;
-		}
-		</style>
 		<pre class="brush: js; ruler: true">
 		function drawParticles() {
 		    var c = canvas.getContext('2d');
@@ -2069,11 +2024,6 @@ var b = c.isPointInPath(200,100);  // returns false</code></pre>
 		<li>recycle the particle<br> by setting the y back to 0</li>
 	</ul>
 	<div style="position:absolute; top:60px; left:280px; width:480px; height:460px;">
-		<style type="text/css">
-		.syntaxhighlighter {
-			height: 460px;
-		}
-		</style>
 		<pre class="brush: js; ruler: true">
 		function killParticles() {
 			for(var i in particles) {
@@ -2116,11 +2066,6 @@ var b = c.isPointInPath(200,100);  // returns false</code></pre>
 		<canvas id="smurfani" width="300" height="150" style='border: 1px solid black;'></canvas>
 	</div>
 	<div style="position:absolute; top:60px; left:355px; width:420px; height:460px;">
-		<style type="text/css">
-		.syntaxhighlighter {
-			height: 460px;
-		}
-		</style>
 		<pre class="brush: js; ruler: true">
 		window.requestAnimFrame = (function(){
 			return  window.requestAnimationFrame || 

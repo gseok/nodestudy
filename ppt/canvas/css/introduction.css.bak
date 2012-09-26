@@ -1,9 +1,9 @@
 .introduction .deck-container {
   width: auto;
   height: auto;
-  max-width: 864px;
+/*  max-width: 864px;*/
   margin: 16px auto 24px auto;
-  min-height: 560px;
+/*  min-height: 560px;*/
   font-size: 16px;
 }
 .no-boxshadow .introduction .deck-container {
