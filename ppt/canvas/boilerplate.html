@@ -47,6 +47,7 @@
 	<script src="modernizr.custom.js"></script> <!-- Required Modernizr file -->
 	<script src="jquery-1.7.2.min.js"></script>
 	<script src="./extensions/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script> <!-- ace editor -->
+	<script src="./extensions/amino/amino.js"></script>
 	<script>
 		// ace editor
 		function makeACEeditor(id) {
@@ -68,15 +69,15 @@
 		<font color="white">Canvas Presentation</font>
 	</h1>
 	<div class="theme-menu">
-		<label for="style-themes">Style Theme:</lebel>
-		<select id="style-themes">
+		<label for="style-themes">Style Theme:</label>
+		<select id="style-themes" onclick="seo()">
 			<option value="./themes/style/web-2.0.css">Web 2.0</option>
 			<option value="./themes/style/swiss.css">Swiss</option>
 			<option value="./themes/style/neon.css">Neon</option>
 			<option value="">None</option>
 		</select>
 		<label for="transition-themes">Transition Theme:</label>
-		<select id="transition-themes">
+		<select id="transition-themes" onclick="seo2()">
 				<option value="./themes/transition/horizontal-slide.css">Horizontal Slide</option>
 				<option value="./themes/transition/vertical-slide.css">Vertical Slide</option>
 				<option value="./themes/transition/fade.css">Fade</option>
@@ -2335,7 +2336,6 @@ var b = c.isPointInPath(200,100);  // returns false</code></pre>
 <script type="text/javascript" src="./extensions/syntaxhighlighter3.0.83/scripts/shBrushJScript.js"></script>
 <script type="text/javascript">SyntaxHighlighter.all();</script>
 <script src="./extensions/jangle/jangle.js"></script>
-<script src="./extensions/amino/amino.js"></script>
 <!--
 <script src="./extensions/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>--> <!-- ace editor -->
 <script>
